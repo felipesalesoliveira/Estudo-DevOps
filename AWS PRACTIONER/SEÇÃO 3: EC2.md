@@ -1,4 +1,4 @@
-# **BILLING (COBRANÇAS E CUSTOS)
+# **BILLING (COBRANÇAS E CUSTOS)**
 - Emite alertas sobre as cobranças da AWS.
 - Criar Budget para notificar quando o limite chegar.
 &nbsp;
@@ -6,3 +6,7 @@
 - É o serviço da AWS que fornece servidores na nuvem.
 - Um computador/servidor que você liga e usa via internet.
 - INSTÂNCIAS: É um computador rodando dentro da nuvem, criado sob demanda.
+&nbsp;
+# **ELASTICIDADE e ESCABILIDADE**
+- ELASTICIDADE:
+- ESCABILIDADE:
