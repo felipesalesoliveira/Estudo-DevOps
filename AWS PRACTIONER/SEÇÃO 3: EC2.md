@@ -18,3 +18,6 @@
 - GPU/Aceleração (Accelerated Computing) - p, g, inf, trn
 - Armazenamento Otimizado (Storage Opitimized) - i, d, h
 &nbsp;
+# **SECURITY GROUP**
+- Firewall para instância (Filtro de tráfego) conrola entrada e saída
+
