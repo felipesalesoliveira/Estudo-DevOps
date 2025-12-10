@@ -8,5 +8,13 @@
 - INSTÂNCIAS: É um computador rodando dentro da nuvem, criado sob demanda.
 &nbsp;
 # **ELASTICIDADE e ESCABILIDADE**
-- ELASTICIDADE:
-- ESCABILIDADE:
+- ELASTICIDADE: Ajusta o recurso conforme demanda.
+- ESCABILIDADE: Capacidade de crescer.
+&nbsp;
+# **TIPOS DE INSTÂNCIAS**
+- Uso Geral (General Purpose) - t, m, a
+- Computação Otimizada (Compute Optimized) - c
+- Memória Otimizada (Memory Optimizes) - r, x, u
+- GPU/Aceleração (Accelerated Computing) - p, g, inf, trn
+- Armazenamento Otimizado (Storage Opitimized) - i, d, h
+&nbsp;
