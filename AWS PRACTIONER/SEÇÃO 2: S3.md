@@ -26,4 +26,3 @@
 - Quando ENABLE o Versioning, não deleta o arquivo, apenas ESCONDE.
 &nbsp;
 # **REPLICATION**
-- Duplicar bucket para diminuir latência.
