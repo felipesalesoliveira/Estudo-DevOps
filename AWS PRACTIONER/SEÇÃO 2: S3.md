@@ -5,7 +5,7 @@
 - Durabilidade: Alta Confibialidade
 - Bucket: "Gavetas" do armário
 &nbsp;
-# **CLASSES DE ARMAZENAMENTO S3** (Frequencia de acesso)
+# **CLASSES DE ARMAZENAMENTO S3** (Frequência de acess)
 - S3 STANDART
 - S3 INTELIGENT TIERING
 - S3 STANDART -IA
