@@ -17,6 +17,21 @@
 &nbsp;
 # **ESTRUTURA S3**
 - BUCKET: Pasta raiz onde ficam os arquivos
-- OBJETOS: Arquivos
+- OBJETOS: Arquivos (max: 5TB)
 - KEY: Caminho + nome do objeto. Ex.: https.// ou URL
 - REGION: Local onde o Bucket foi hospedada. EX.: US-EAST-1A
+&nbsp;
+# **VERSIONAMENTO (VERSIONING)**
+- Perminte manter várias versões do mesmo objeto.
+- Quando ENABLE o Versioning, não deleta o arquivo, apenas ESCONDE.
+&nbsp;
+# **REPLICATION**
+- SRR (Same Region Replication)
+- CRR (Cross Region Replication)
+&nbsp;
+# **AWS SNOW FAMILY**
+- SNOWCONE (P)
+- SNOWVBALL (M)
+- SNOWMOBILE (G)
+
+
