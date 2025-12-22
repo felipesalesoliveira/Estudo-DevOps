@@ -38,3 +38,11 @@ Kernel → Terreno e leis físicas
 &nbsp;
 # **POD**
 - Menor unidade do Kubernetes
+&nbsp;
+# **ARQUIVO .YAML MULTI NODE**
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
