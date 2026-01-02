@@ -1,0 +1,15 @@
+ENTENDER O SISTEMA (uname -a / whoami / df -h / free - h)
+⬇
+VER OS PROCESSOS (ps aux / ps aux | grep "nome" / find "pasta" 2>/dev/null)
+⬇
+VER OS LOGS (head / tail)
+⬇
+ACHAR ARQUIVOS DE CONFIGURAÇÃO (find)
+⬇
+VER DIFERENÇAS (diff)
+⬇
+EDITAR ARQUIVOS (cp / vim / nano)
+⬇
+EDITAR PERMISSÕES (chmod)
+⬇
+REINICIAR O APP (kill)
