@@ -12,25 +12,25 @@ As habilidades abaixo são necessárias para completar as etapas de deployment:
 
 # Pré-requisitos
 
-Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para completar o exercício abaixo.
+Fazer login na AWS Cloud e criar uma instância EC2 (t2.micro) baseada em Linux para completar o exercício abaixo.
 
 ---
 
 # Deployment
 
-## Login como superusuário (root) e execute as etapas abaixo
+## Login como superuser (root) e executar as etapas abaixo
 
 - Criar usuários e definir senhas – `user1`, `user2`, `user3`
 - Criar grupos – `devops`, `aws`
 - Alterar o grupo primário dos usuários `user2` e `user3` para o grupo `devops`
 - Adicionar o grupo `aws` como grupo secundário do usuário `user1`
-- Criar a estrutura de arquivos e diretórios conforme mostrado no diagrama acima
+- Criar a estrutura de arquivos e diretórios conforme mostrado no diagrama (diagrama Project-03)
 - Alterar o grupo de `/dir1`, `/dir7/dir10`, `/f2` para o grupo `devops`
 - Alterar o proprietário de `/dir1`, `/dir7/dir10`, `/f2` para o usuário `user1`
 
 ---
 
-## Login como `user1` e execute as etapas abaixo
+## Login como `user1` e executar as etapas abaixo
 
 - Criar usuários e definir senhas – `user4`, `user5`
 - Criar grupos – `app`, `database`
@@ -46,7 +46,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ---
 
-## Login como `user1` e execute as etapas abaixo
+## Login como `user1` e executar as etapas abaixo
 
 - Criar o diretório – `/home/user2/dir1`
 - Acessar o diretório `/dir2/dir1/dir2/dir10` e criar o arquivo `/opt/dir14/dir10/f1` utilizando caminho relativo
@@ -59,7 +59,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ---
 
-## Login como `user2` e execute as etapas abaixo
+## Login como `user2` e executar as etapas abaixo
 
 - Criar o arquivo `/dir1/f2`
 - Excluir `/dir6`
@@ -71,7 +71,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ---
 
-## Login como `root` e execute as etapas abaixo
+## Login como `root` e executar as etapas abaixo
 
 - Procurar pelo arquivo com nome `f3` no servidor e listar todos os caminhos absolutos onde ele for encontrado
 - Mostrar a contagem do número de arquivos no diretório `/`
@@ -80,7 +80,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ---
 
-## Login como `root` e execute as etapas abaixo
+## Login como `root` e executar as etapas abaixo
 
 - Criar um sistema de arquivos no novo volume EBS anexado na etapa anterior
 - Montar o sistema de arquivos no diretório `/data`
@@ -90,7 +90,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ---
 
-## Login como `user5` e execute as etapas abaixo
+## Login como `user5` e executar as etapas abaixo
 
 - Excluir `/dir1`
 - Excluir `/dir2`
@@ -102,7 +102,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ---
 
-## Login como `root` e execute as etapas abaixo
+## Login como `root` e executar as etapas abaixo
 
 - Excluir os usuários – `user1`, `user2`, `user3`, `user4`, `user5`
 - Excluir os grupos – `app`, `aws`, `database`, `devops`
@@ -115,7 +115,7 @@ Faça login na AWS Cloud e crie uma instância EC2 baseada em Linux para complet
 
 ## Finalização
 
-Tudo pronto? Ainda não está confiante?  
-👉 Repita todos os passos!
+Tudo pronto?  
+👉 Repetir todos os passos!
 
-**Happy Learning! 🚀**
+**🚀**
