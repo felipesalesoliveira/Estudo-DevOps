@@ -5,15 +5,6 @@
 
 ---
 
-## SUMÁRIO
-- Objetivo
-- Pré-requisitos
-- Pré-implantação
-- Implantação da VPC
-- Validação
-
----
-
 ## Objetivo
 Implantar uma **arquitetura de rede virtual modular e escalável** utilizando o **Amazon VPC**.
 

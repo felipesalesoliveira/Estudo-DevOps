@@ -1,3 +1,5 @@
+![Arquitetura Linux](Diagrama-Project-03.png)
+
 # Skills
 
 As habilidades abaixo são necessárias para completar as etapas de deployment:
