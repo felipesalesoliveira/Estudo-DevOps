@@ -1,0 +1,138 @@
+# 🗄️ Bancos de Dados da AWS — Resumo Geral
+
+A AWS oferece bancos de dados gerenciados para diferentes **modelos de dados**, **cargas de trabalho** e **níveis de performance**.
+
+---
+
+## 📊 1. Bancos Relacionais (SQL)
+
+### 🔹 Amazon RDS
+- **Modelo:** Relacional
+- **Engines:** MySQL, PostgreSQL, MariaDB, Oracle, SQL Server
+- **Gerenciado:** Sim (backup, patch, HA)
+- **Escalabilidade:** Vertical + Read Replicas
+
+**Casos de uso:**
+- Aplicações tradicionais
+- Sistemas transacionais
+- ERPs, CRMs
+
+---
+
+### 🔹 Amazon Aurora
+- **Compatível:** MySQL e PostgreSQL
+- **Performance:** Até 5x MySQL / 3x PostgreSQL
+- **Alta disponibilidade:** Multi-AZ nativo
+- **Escala automática**
+
+**Casos de uso:**
+- Aplicações críticas
+- Alta performance
+- Microservices
+
+---
+
+## 🧩 2. Bancos Não Relacionais (NoSQL)
+
+### 🔹 Amazon DynamoDB
+- **Modelo:** Key-Value / Document
+- **Serverless**
+- **Escala automática**
+- **Latência:** Milissegundos
+
+**Casos de uso:**
+- Sistemas de alta escala
+- IoT
+- Sessões de usuário
+- Jogos
+
+---
+
+### 🔹 Amazon ElastiCache
+- **Engines:** Redis, Memcached
+- **Uso:** Cache em memória
+- **Extremamente rápido**
+
+**Casos de uso:**
+- Cache de aplicações
+- Sessões
+- Ranking, contadores
+
+---
+
+## 📄 3. Bancos Orientados a Documento
+
+### 🔹 Amazon DocumentDB
+- **Compatível:** MongoDB
+- **Modelo:** Documentos (JSON)
+- **Gerenciado**
+
+**Casos de uso:**
+- Catálogos
+- Conteúdo dinâmico
+- Aplicações modernas
+
+---
+
+## 🧠 4. Bancos Especializados
+
+### 🔹 Amazon Keyspaces
+- **Compatível:** Apache Cassandra
+- **Serverless**
+- **Alta escala**
+
+**Casos de uso:**
+- Grandes volumes de dados distribuídos
+- Time series
+
+---
+
+### 🔹 Amazon Neptune
+- **Modelo:** Grafo
+- **Engines:** Gremlin, SPARQL
+- **Focado em relacionamentos**
+
+**Casos de uso:**
+- Redes sociais
+- Recomendação
+- Fraude
+
+---
+
+### 🔹 Amazon Timestream
+- **Modelo:** Time Series
+- **Serverless**
+- **Otimizado para tempo**
+
+**Casos de uso:**
+- Métricas
+- IoT
+- Monitoramento
+
+---
+
+## 📈 5. Data Warehouse / Analytics
+
+### 🔹 Amazon Redshift
+- **Modelo:** Colunar
+- **SQL**
+- **Alta performance analítica**
+
+**Casos de uso:**
+- BI
+- Relatórios
+- Analytics em larga escala
+
+---
+
+## 🔍 Tabela Comparativa Rápida
+
+| Serviço | Tipo | Uso Principal |
+|------|------|--------------|
+| RDS | Relacional | Apps tradicionais |
+| Aurora | Relacional | Alta performance |
+| DynamoDB | NoSQL | Escala massiva |
+| ElastiCache | In-memory | Cache |
+| DocumentDB | Documento | JSON / Mongo |
+| Keyspaces | Wide-column | Cassandra |
+| Neptune | Grafo | Relacionamentos
