@@ -135,4 +135,17 @@ A AWS oferece bancos de dados gerenciados para diferentes **modelos de dados**, 
 | ElastiCache | In-memory | Cache |
 | DocumentDB | Documento | JSON / Mongo |
 | Keyspaces | Wide-column | Cassandra |
-| Neptune | Grafo | Relacionamentos
+| Neptune | Grafo | Relacionamentos |
+| Timestream | Time series | Métricas |
+| Redshift | Data Warehouse | Analytics |
+
+---
+
+## 💡 Dicas para Certificação AWS
+- **OLTP:** RDS, Aurora, DynamoDB
+- **OLAP:** Redshift
+- **Cache:** ElastiCache
+- **Serverless:** DynamoDB, Keyspaces, Timestream
+- **Alta performance relacional:** Aurora
+
+📌 Muito cobrado em **AWS CLF, SAA e entrevistas DevOps**
