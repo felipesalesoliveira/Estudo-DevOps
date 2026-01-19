@@ -1,0 +1,133 @@
+# 📦 Classes de Armazenamento do Amazon S3 (AWS)
+
+O Amazon S3 oferece diferentes classes de armazenamento para equilibrar **custo, disponibilidade e tempo de acesso**, conforme o padrão de uso dos dados.
+
+---
+
+## 1. S3 Standard
+- **Uso:** Acesso frequente
+- **Disponibilidade:** 99.99%
+- **Durabilidade:** 99.999999999% (11 9s)
+- **Custo:** Mais alto
+- **Acesso:** Imediato
+
+**Casos de uso:**
+- Aplicações web
+- Conteúdo estático
+- APIs
+- Dados acessados constantemente
+
+---
+
+## 2. S3 Intelligent-Tiering
+- **Uso:** Acesso imprevisível
+- **Movimentação automática** entre camadas
+- **Taxa de monitoramento:** pequena
+- **Acesso:** Imediato
+
+**Camadas internas:**
+- Frequent Access  
+- Infrequent Access  
+- Archive Instant  
+- Archive (opcional)  
+- Deep Archive (opcional)
+
+**Casos de uso:**
+- Dados com padrão de acesso desconhecido
+- Otimização automática de custos
+
+---
+
+## 3. S3 Standard-IA (Infrequent Access)
+- **Uso:** Acesso pouco frequente
+- **Disponibilidade:** 99.9%
+- **Custo:** Menor que Standard
+- **Taxa por acesso**
+- **Acesso:** Imediato
+
+**Casos de uso:**
+- Backups
+- Disaster Recovery (DR)
+- Dados acessados ocasionalmente
+
+---
+
+## 4. S3 One Zone-IA
+- **Uso:** Acesso pouco frequente
+- **Disponibilidade:** 99.5%
+- **Armazenamento:** Apenas 1 AZ
+- **Custo:** Mais barato que Standard-IA
+- **Acesso:** Imediato
+
+⚠️ Menor resiliência
+
+**Casos de uso:**
+- Dados recriáveis
+- Backups secundários
+- Ambientes não críticos
+
+---
+
+## 5. S3 Glacier Instant Retrieval
+- **Uso:** Arquivamento com acesso raro
+- **Acesso:** Milissegundos
+- **Custo:** Baixo para armazenamento + taxa de acesso
+
+**Casos de uso:**
+- Arquivos legais
+- Auditorias
+- Backups arquivados que precisam de acesso rápido
+
+---
+
+## 6. S3 Glacier Flexible Retrieval
+(Antigo S3 Glacier)
+- **Uso:** Arquivamento
+- **Tempo de recuperação:**
+  - Expedited: minutos
+  - Standard: 3–5 horas
+  - Bulk: 5–12 horas
+- **Custo:** Muito baixo
+
+**Casos de uso:**
+- Dados históricos
+- Compliance
+- Backups de longo prazo
+
+---
+
+## 7. S3 Glacier Deep Archive
+- **Uso:** Arquivamento de longo prazo
+- **Custo:** Mais barato do S3
+- **Recuperação:** 12–48 horas
+
+**Casos de uso:**
+- Dados legais (retenção de anos)
+- Arquivos raramente acessados
+- Requisitos regulatórios
+
+---
+
+## 📊 Tabela Comparativa
+
+| Classe | Frequência de Acesso | Tempo de Recuperação |
+|------|---------------------|---------------------|
+| S3 Standard | Frequente | Imediato |
+| Intelligent-Tiering | Variável | Imediato |
+| Standard-IA | Baixa | Imediato |
+| One Zone-IA | Baixa | Imediato |
+| Glacier Instant | Rara | Milissegundos |
+| Glacier Flexible | Muito rara | Minutos–Horas |
+| Deep Archive | Quase nunca | Horas–Dias |
+
+---
+
+## 💡 Dicas Importantes
+- Use **Lifecycle Policies** para mover objetos entre classes
+- **Intelligent-Tiering** é ideal quando o padrão de acesso é desconhecido
+- Classes Glacier **não são backups automáticos** — é necessário restore
+- Todas as classes mantêm **11 9s de durabilidade**
+
+---
+
+📌 **Muito cobrado em certificações AWS (CLF, SAA, DVA, SOA) e entrevistas DevOps**
