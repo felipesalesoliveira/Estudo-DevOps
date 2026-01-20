@@ -1,0 +1,159 @@
+# Cloud Adoption Framework (CAF)
+
+O **Cloud Adoption Framework (CAF)** é um **conjunto estruturado de boas práticas** criado para ajudar organizações a **planejar, adotar e governar a nuvem** de forma segura, escalável e alinhada ao negócio.
+
+> O CAF existe tanto na **AWS** quanto no **Azure**, com conceitos muito parecidos. Este documento apresenta uma visão **neutra**, com foco prático para Cloud / DevOps.
+
+---
+
+## 🎯 Objetivo do Cloud Adoption Framework
+
+* Ajudar empresas a **migrar para a nuvem com menos risco**
+* Alinhar **tecnologia, pessoas e processos**
+* Criar uma base sólida de **governança e segurança**
+* Acelerar a **maturidade cloud** da organização
+
+---
+
+## 🧭 Fases do Cloud Adoption Framework
+
+### 1️⃣ Strategy (Estratégia)
+
+Define **por que** a empresa está indo para a nuvem.
+
+**Principais atividades:**
+
+* Definição de objetivos de negócio
+* Avaliação de benefícios (agilidade, custo, inovação)
+* Identificação de riscos
+* Criação do business case
+
+---
+
+### 2️⃣ Plan (Planejamento)
+
+Define **como** a migração será feita.
+
+**Principais atividades:**
+
+* Avaliação do ambiente atual (on-premises)
+* Classificação de aplicações
+* Definição de roadmap de migração
+* Planejamento de custos e capacidades
+
+---
+
+### 3️⃣ Ready (Preparação)
+
+Prepara a **fundação da nuvem**.
+
+**Principais atividades:**
+
+* Criação de landing zone
+* Definição de redes, contas e identidades
+* Políticas de segurança e governança
+* Padronização de ambientes
+
+---
+
+### 4️⃣ Adopt (Adoção)
+
+Execução da migração ou modernização.
+
+**Principais atividades:**
+
+* Migração de workloads (rehost, replatform, refactor)
+* Modernização de aplicações
+* Implementação de CI/CD
+* Testes e validação
+
+---
+
+### 5️⃣ Govern (Governança)
+
+Garante controle contínuo.
+
+**Principais atividades:**
+
+* Gestão de custos (FinOps)
+* Políticas de compliance
+* Segurança contínua
+* Auditoria e controles
+
+---
+
+### 6️⃣ Manage (Gerenciamento)
+
+Operação e otimização do ambiente cloud.
+
+**Principais atividades:**
+
+* Monitoramento e observabilidade
+* Gestão de incidentes
+* Automação operacional
+* Otimização contínua
+
+---
+
+## 🧩 Pilares do CAF
+
+### 👥 People
+
+* Capacitação de times
+* Mudança cultural
+* Definição de papéis (Cloud, DevOps, SRE)
+
+### 🏗️ Process
+
+* ITSM
+* DevOps e CI/CD
+* Governança e compliance
+
+### ⚙️ Technology
+
+* Infraestrutura cloud
+* Segurança
+* Automação
+* Observabilidade
+
+---
+
+## ☁️ CAF na AWS (exemplos)
+
+* **Strategy** → AWS CAF Strategy Perspective
+* **Ready** → Landing Zone, Control Tower
+* **Adopt** → Migration Hub, Application Migration Service
+* **Govern** → AWS Config, Organizations, Budgets
+* **Manage** → CloudWatch, Systems Manager
+
+---
+
+## 🆚 CAF vs Well-Architected Framework
+
+| CAF                        | Well-Architected          |
+| -------------------------- | ------------------------- |
+| Foco em adoção             | Foco em arquitetura       |
+| Visão organizacional       | Visão técnica             |
+| Pessoas + Processos + Tech | Boas práticas técnicas    |
+| Antes e durante a migração | Após e durante a operação |
+
+👉 Eles se **complementam**.
+
+---
+
+## 👨‍💻 Quem deve conhecer o CAF?
+
+* Cloud Engineers
+* DevOps Engineers
+* Arquitetos de Soluções
+* Gestores de TI
+* Líderes técnicos
+
+---
+
+## 📌 Resumo Final
+
+* CAF = guia para adoção de cloud
+* Aborda estratégia, pessoas, processos e tecnologia
+* Reduz riscos de migração
+* Base para ambientes cloud maduros

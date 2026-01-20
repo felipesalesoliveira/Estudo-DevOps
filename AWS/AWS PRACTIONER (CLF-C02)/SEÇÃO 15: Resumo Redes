@@ -1,0 +1,100 @@
+# 🌐 Redes na AWS — Resumo Essencial
+
+A arquitetura de rede da AWS é baseada principalmente na **VPC (Virtual Private Cloud)** e seus componentes, permitindo controle total sobre **endereçamento, segurança e roteamento**.
+
+---
+
+## 🏗️ 1. Amazon VPC
+- **Rede virtual isolada** dentro da AWS
+- Total controle sobre:
+  - CIDR (IPv4 / IPv6)
+  - Subnets
+  - Rotas
+  - Segurança
+
+**Exemplo:**  
+`10.0.0.0/16`
+
+---
+
+## 🧩 2. Subnets
+Divisões da VPC, **sempre associadas a uma AZ**.
+
+### 🔹 Subnet Pública
+- Possui rota para **Internet Gateway**
+- Usada para:
+  - Load Balancer
+  - Bastion Host
+  - NAT Gateway
+
+### 🔹 Subnet Privada
+- **Sem acesso direto à internet**
+- Usada para:
+  - EC2 privadas
+  - RDS
+  - EKS nodes
+
+---
+
+## 🌍 3. Internet Gateway (IGW)
+- Permite **entrada e saída de tráfego da internet**
+- Necessário para tornar uma subnet pública
+- Associado à VPC
+
+---
+
+## 🔄 4. NAT Gateway / NAT Instance
+- Permite que **recursos privados acessem a internet**
+- **Não permite tráfego de entrada**
+
+✅ NAT Gateway:
+- Gerenciado
+- Alta disponibilidade
+- Mais caro
+
+---
+
+## 🗺️ 5. Route Tables
+- Controlam **para onde o tráfego vai**
+- Cada subnet deve estar associada a uma route table
+
+**Exemplo de rota:**
+- `0.0.0.0/0 → Internet Gateway`
+
+---
+
+## 🔐 6. Segurança de Rede
+
+### 🔹 Security Groups
+- **Firewall stateful**
+- Atua no nível da instância
+- Permite apenas regras **ALLOW**
+- Avaliado antes do tráfego chegar à EC2
+
+---
+
+### 🔹 Network ACL (NACL)
+- **Stateless**
+- Atua no nível da subnet
+- Regras ALLOW e DENY
+- Avaliado antes do Security Group
+
+---
+
+## ⚖️ 7. Load Balancers (ELB)
+
+### 🔹 ALB (Application Load Balancer)
+- Camada 7 (HTTP/HTTPS)
+- Regras por host/path
+- Ideal para microsserviços
+
+### 🔹 NLB (Network Load Balancer)
+- Camada 4 (TCP/UDP)
+- Alta performance e baixa latência
+
+### 🔹 CLB (Classic)
+- Legado (não recomendado)
+
+---
+
+## 🔗 8. Conectividade Híbrida
