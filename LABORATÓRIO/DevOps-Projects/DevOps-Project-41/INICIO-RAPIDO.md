@@ -1,17 +1,36 @@
-# 🚀 Início Rápido - Super Mario no EKS
+# 🚀 Início Rápido - Super Mario no Kubernetes
 
 Guia rápido para começar o projeto em 5 minutos.
 
 ---
 
+## ☁️ Escolha seu Provider
+
+**Este projeto suporta AWS EKS e Google GKE!**
+
+- **AWS EKS:** Veja passos abaixo
+- **Google GKE:** Veja `GKE-TF/README.md` ⭐ **RECOMENDADO** (mais barato, execução local)
+
+**📖 Não sabe qual escolher?** Veja `ESCOLHA-PROVIDER.md`
+
+---
+
 ## ✅ Checklist Pré-requisitos
 
-Antes de começar, certifique-se de ter:
-
+### Para AWS EKS:
 - [ ] Conta AWS ativa
-- [ ] Acesso ao console AWS (root ou admin)
+- [ ] Terraform instalado localmente
+- [ ] AWS CLI instalado e configurado
+- [ ] kubectl instalado
 - [ ] Entendimento de que **vai gerar custos** (~$0.17/hora)
 - [ ] Tempo disponível (~2 horas para setup completo)
+
+### Para Google GKE (recomendado):
+- [ ] Conta Google Cloud com free trial ($300 créditos)
+- [ ] Google Cloud SDK instalado (`gcloud`)
+- [ ] Terraform instalado
+- [ ] kubectl instalado
+- [ ] Tempo disponível (~1 hora para setup completo)
 
 ---
 

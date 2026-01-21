@@ -1,16 +1,47 @@
 # 🎮 Deploy do Super Mario no Kubernetes usando Terraform - Guia Completo
 
-Este guia documenta passo a passo como replicar o projeto de deploy do Super Mario no EKS (Elastic Kubernetes Service) da AWS usando Terraform, baseado no artigo do Aakib Khan.
+Este guia documenta passo a passo como replicar o projeto de deploy do Super Mario no Kubernetes usando Terraform.
+
+## ☁️ Escolha seu Provider de Nuvem
+
+**Este projeto suporta DOIS provedores:**
+
+- **AWS EKS** (Elastic Kubernetes Service) - Documentado neste README
+- **Google GKE** (Google Kubernetes Engine) - Veja `GKE-TF/README.md` ⭐ **RECOMENDADO**
+
+**📖 Não sabe qual escolher?** Veja **[ESCOLHA-PROVIDER.md](./ESCOLHA-PROVIDER.md)**
+
+**💡 Dica:** GKE é mais barato (control plane grátis) e permite execução local (sem EC2)!
+
+---
 
 ## 🎓 Para Iniciantes Completos
 
-**Se você nunca usou Terraform, AWS ou Kubernetes antes**, comece pelo **[LABORATORIO.md](./LABORATORIO.md)** - um guia didático completo do zero, assumindo conhecimento zero. Ele ensina:
+**Se você nunca usou Terraform, AWS/GCP ou Kubernetes antes**, comece pelo **[LABORATORIO.md](./LABORATORIO.md)** - um guia didático completo do zero, assumindo conhecimento zero. Ele ensina:
 - Como instalar Terraform do zero
-- Como criar conta AWS
+- Como criar conta AWS/GCP
 - Conceitos básicos explicados de forma simples
 - Passo a passo detalhado com explicações de cada comando
 
 **Se você já tem conhecimento básico**, pode seguir este README diretamente.
+
+---
+
+## 💻 Execução Local vs EC2
+
+**Este projeto pode ser executado de duas formas:**
+
+1. **Localmente (recomendado):** Execute Terraform da sua máquina
+   - ✅ Mais rápido
+   - ✅ Não precisa EC2
+   - ✅ Funciona com AWS e GCP
+   - 📖 Veja seção abaixo sobre execução local
+
+2. **Na EC2 (original):** Execute tudo dentro de uma EC2 AWS
+   - Documentado neste README (passos 2-3)
+   - Útil se quiser seguir exatamente o artigo original
+
+**Para GCP, recomendamos execução local!**
 
 ## 📋 Índice
 
@@ -77,21 +108,84 @@ Este guia documenta passo a passo como replicar o projeto de deploy do Super Mar
 
 ## 📦 Pré-requisitos
 
+### Escolha seu Provider:
+
+**Este README foca em AWS EKS.** Para Google GKE, veja `GKE-TF/README.md`
+
 ### O que você precisa ter:
 
+#### Para AWS EKS:
 - ✅ **Conta AWS** (nova ou com créditos promocionais recomendado)
-- ✅ **Conhecimento básico** de:
-  - Linux/terminal
-  - AWS (EC2, IAM, EKS)
-  - Kubernetes básico
-  - Terraform básico
+- ✅ **Terraform** instalado localmente (veja `LABORATORIO.md`)
+- ✅ **AWS CLI** instalado e configurado (veja `LABORATORIO.md`)
+- ✅ **kubectl** instalado (veja `LABORATORIO.md`)
 
-### O que vamos instalar:
+#### Para Google GKE:
+- ✅ **Conta Google Cloud** com free trial ($300 créditos)
+- ✅ **Google Cloud SDK** instalado (`gcloud`)
+- ✅ **Terraform** instalado
+- ✅ **kubectl** instalado
+- 📖 Veja `GKE-TF/README.md` para instruções completas
 
-- Docker
-- Terraform
-- AWS CLI
-- kubectl
+### Conhecimento básico recomendado:
+
+- Linux/terminal
+- Conceitos básicos de Kubernetes
+- Conceitos básicos de Terraform
+- Conceitos básicos de AWS ou GCP
+
+---
+
+## 💻 Execução Local (Recomendado)
+
+**Você pode executar tudo da sua máquina local!** Não precisa criar EC2.
+
+### Para AWS (execução local):
+
+1. **Instalar ferramentas localmente:**
+   - Terraform (veja `LABORATORIO.md`)
+   - AWS CLI (veja `LABORATORIO.md`)
+   - kubectl (veja `LABORATORIO.md`)
+
+2. **Configurar AWS CLI:**
+   ```bash
+   aws configure
+   ```
+
+3. **Pular passos 2-3 deste README** (criação de EC2 e instalação de ferramentas)
+
+4. **Ir direto para Passo 4** (IAM Role) - mas criar role para seu usuário IAM, não EC2
+
+5. **Executar Terraform localmente:**
+   ```bash
+   cd EKS-TF
+   terraform init
+   terraform apply
+   ```
+
+### Para GCP (execução local - mais fácil):
+
+1. **Instalar Google Cloud SDK:**
+   ```bash
+   # Mac
+   brew install google-cloud-sdk
+   
+   # Ou veja: https://cloud.google.com/sdk/docs/install
+   ```
+
+2. **Configurar autenticação:**
+   ```bash
+   gcloud auth login
+   gcloud auth application-default login
+   ```
+
+3. **Seguir `GKE-TF/README.md`**
+
+**💡 Vantagens da execução local:**
+- ✅ Mais rápido
+- ✅ Não precisa EC2 (economiza custos)
+- ✅ Mais simples
+- ✅ Funciona com AWS e GCP
 
 ---
 

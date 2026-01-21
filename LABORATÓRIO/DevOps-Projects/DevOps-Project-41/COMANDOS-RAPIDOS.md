@@ -1,6 +1,15 @@
 # ⚡ Comandos Rápidos - Referência
 
-Guia rápido de comandos para executar o projeto Super Mario no EKS.
+Guia rápido de comandos para executar o projeto Super Mario no Kubernetes.
+
+**Este guia contém comandos para AWS EKS e Google GKE.**
+
+---
+
+## ☁️ Escolha seu Provider
+
+- **AWS EKS:** Veja seções abaixo
+- **Google GKE:** Veja seção "🚀 Google GKE - Execução Local" ⭐ **RECOMENDADO**
 
 ---
 
@@ -395,3 +404,154 @@ terraform destroy --auto-approve
 ---
 
 **💡 Dica:** Salve este arquivo como referência rápida durante a execução do projeto!
+
+---
+
+## 🚀 Google GKE - Execução Local ⭐ RECOMENDADO
+
+### Instalação Google Cloud SDK (Local)
+
+**Mac:**
+```bash
+brew install google-cloud-sdk
+```
+
+**Linux:**
+```bash
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+```
+
+**Windows:**
+- Baixe: https://cloud.google.com/sdk/docs/install
+
+### Configuração Inicial GCP
+
+```bash
+# Login no GCP
+gcloud auth login
+
+# Criar projeto (ou usar existente)
+gcloud projects create SEU-PROJECT-ID --name="Super Mario Lab"
+
+# Definir projeto atual
+gcloud config set project SEU-PROJECT-ID
+
+# Habilitar APIs necessárias
+gcloud services enable container.googleapis.com
+gcloud services enable compute.googleapis.com
+
+# Configurar Application Default Credentials (para Terraform)
+gcloud auth application-default login
+```
+
+### Configurar Terraform GKE
+
+```bash
+cd GKE-TF
+
+# Editar terraform.tfvars
+nano terraform.tfvars
+# Substituir: gcp_project_id = "SEU-PROJECT-ID-AQUI"
+
+# (Opcional) Configurar backend GCS
+# Criar bucket GCS primeiro:
+gsutil mb -p SEU-PROJECT-ID gs://SEU-BUCKET-GCS-AQUI
+# Depois editar backend.tf com nome do bucket
+```
+
+### Terraform - Criar Infraestrutura GKE
+
+```bash
+# Inicializar
+terraform init
+
+# Validar
+terraform validate
+
+# Ver plano
+terraform plan
+
+# Aplicar (cria tudo)
+terraform apply
+
+# ⏱️ Aguardar 5-10 minutos
+```
+
+### Configurar kubectl para GKE
+
+```bash
+# Obter credenciais do cluster
+gcloud container clusters get-credentials $(terraform output -raw cluster_name) \
+  --region $(terraform output -raw cluster_location) \
+  --project $(gcloud config get-value project)
+
+# Verificar conexão
+kubectl cluster-info
+kubectl get nodes
+```
+
+### Deploy do Super Mario (GKE)
+
+```bash
+# Voltar para pasta raiz
+cd ..
+
+# Aplicar deployment
+kubectl apply -f deployment.yaml
+kubectl get pods -w
+
+# Aplicar service
+kubectl apply -f service.yaml
+kubectl get service mario-service -w
+
+# Obter IP externo
+kubectl get service mario-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+echo
+```
+
+### Limpeza GKE
+
+```bash
+# Deletar recursos Kubernetes
+kubectl delete service mario-service
+kubectl delete deployment mario-deployment
+
+# Destruir infraestrutura
+cd GKE-TF
+terraform destroy --auto-approve
+```
+
+### Comandos Úteis GCP
+
+```bash
+# Ver projetos
+gcloud projects list
+
+# Ver clusters GKE
+gcloud container clusters list
+
+# Ver nodes
+gcloud compute instances list
+
+# Ver custos (requer billing API habilitada)
+gcloud billing accounts list
+```
+
+---
+
+## 📊 Comparação Rápida: AWS vs GCP
+
+| Ação | AWS EKS | Google GKE |
+|------|---------|------------|
+| **Configurar kubectl** | `aws eks update-kubeconfig` | `gcloud container clusters get-credentials` |
+| **Ver clusters** | `aws eks list-clusters` | `gcloud container clusters list` |
+| **Ver nodes** | `aws ec2 describe-instances` | `gcloud compute instances list` |
+| **Custo/hora** | ~$0.17 | ~$0.035 |
+
+---
+
+**💡 Para mais detalhes:**
+- AWS: Veja `README.md`
+- GCP: Veja `GKE-TF/README.md`
+- Escolha: Veja `ESCOLHA-PROVIDER.md`
