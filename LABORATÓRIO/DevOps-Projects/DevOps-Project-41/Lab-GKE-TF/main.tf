@@ -1,18 +1,4 @@
 ###############################################################################
-# Provider
-###############################################################################
-
-provider "google" {
-  # project
-  # https://registry.terraform.io/providers/hashicorp/google/latest/docs#project
-  project = var.gcp_project_id
-
-  # region
-  # https://registry.terraform.io/providers/hashicorp/google/latest/docs#region
-  region  = var.gcp_region
-}
-
-###############################################################################
 # VPC
 ###############################################################################
 
