@@ -23,13 +23,13 @@ variable "account_tier" {
 }
 
 variable "account_replication_type" {
-    description = "Tipo de replicação de dados da Storage Account na Azure."
-    type        = string
-    default     = "LRS"
+  description = "Tipo de replicação de dados da Storage Account na Azure."
+  type        = string
+  default     = "LRS"
 }
 
 variable "storage_account_id" {
-    description = "ID da Storage Account na Azure."
-    type        = string
-    default     = ""
+  description = "ID da Storage Account na Azure."
+  type        = string
+  default     = ""
 }
