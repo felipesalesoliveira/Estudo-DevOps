@@ -1,0 +1,8 @@
+- terraform
+- provider (aws, azure, gcp)
+- resource (recurso a ser criado)
+- data (referencia fora terraform)
+- module (pedaço de código já criado)
+- variable 
+- output
+- locals
