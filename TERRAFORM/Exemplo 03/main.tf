@@ -13,8 +13,8 @@ terraform {
     }
   }
 
-backend "azurerm" {
-    resource_group_name = "rg-terraform-state"
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform-state"
     storage_account_name = "felipesalesstorage"
     container_name       = "remote-state"
     key                  = "azure-vnet/terraform.tfstate"
@@ -26,10 +26,9 @@ provider "azurerm" {
   features {}
 }
 resource "azurerm_resource_group" "resource_group" {
-  name     = "nome_resouce_group"
-  location = ""
+  name     = "curso-terraform"
+  location = var.location
 
-  tags = {
-    environment = "value"
-  }
+  tags = local.common_tags
+
 }

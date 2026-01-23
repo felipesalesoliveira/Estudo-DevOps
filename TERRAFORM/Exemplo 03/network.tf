@@ -1,10 +1,3 @@
-resource "azurerm_resource_group" "resource_group" {
-  name     = "rg-vnet"
-  location = var.location
-
-  tags = local.common_tags
-}
-
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-terraform"
   location            = var.location
@@ -13,7 +6,7 @@ resource "azurerm_virtual_network" "vnet" {
   dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
   tags = local.common_tags
-  }
+}
 
 resource "azurerm_subnet" "subnet" {
   name                 = "subnet-terraform"
