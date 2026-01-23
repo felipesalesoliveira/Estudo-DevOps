@@ -5,8 +5,8 @@
 terraform {
    
  backend "s3" {
-    bucket = "nome_bucket"
-    key    = "nome-terraform.tfstate"
+    bucket = "felipesales-exemplo04"
+    key    = "aws-nome/terraform.tfstate"
     region = "us-east-1"
   }
   
