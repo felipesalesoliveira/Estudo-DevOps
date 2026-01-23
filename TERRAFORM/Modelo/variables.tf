@@ -33,3 +33,21 @@ variable "storage_account_id" {
   type        = string
   default     = ""
 }
+
+variable "resource_group_name" {
+  description = "Nome do Resource Group na Azure."
+  type        = string
+  default     = "rg-teeraform"
+}
+
+variable "storage_account_name" {
+  description = "Nome da Storage Account na Azure."
+  type        = string
+  default     = "felipesalesterraform"
+
+}
+variable "storage_container_name" {
+  description = "Nome do Container na Storage Account da Azure."
+  type        = string
+  default     = "container-terraform"
+}

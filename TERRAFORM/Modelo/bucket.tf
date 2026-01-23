@@ -12,18 +12,6 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 ###############################################################################
-# AZURE BLOB STORAGE Bucket
-###############################################################################
-
-resource "azurerm_storage_account" "storage_account" {
-  name                     = "nome_único_bucket"
-  resource_group_name      = "nome_resource_group"
-  location                 = "us-east-1"
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-###############################################################################
 # GOOGLE CLOUD STORAGE Bucket
 ###############################################################################
 
