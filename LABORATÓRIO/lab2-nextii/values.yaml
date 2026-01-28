@@ -1,0 +1,37 @@
+eck-elasticsearch:
+  enabled: true
+  fullnameOverride: elasticsearch
+  nodeSets:
+    - name: default
+      count: 1
+      config:
+        node.store.allow_mmap: false
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 1Gi
+                limits:
+                  memory: 1.5Gi
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 5Gi
+
+eck-kibana:
+  enabled: true
+  fullnameOverride: kibana
+  count: 1
+
+eck-beats:
+  enabled: false
+
+eck-apm-server:
+  enabled: false

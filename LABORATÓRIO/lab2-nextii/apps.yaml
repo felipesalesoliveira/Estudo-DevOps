@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-ok
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: app-ok }
+  template:
+    metadata:
+      labels: { app: app-ok }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: "10m", memory: "32Mi" }
+            limits: { memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-ok
+  namespace: apps
+spec:
+  selector: { app: app-ok }
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-err
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: app-err }
+  template:
+    metadata:
+      labels: { app: app-err }
+    spec:
+      containers:
+        - name: http-echo
+          image: hashicorp/http-echo:1.0
+          args:
+            - "-text=hello"
+            - "-listen=:5678"
+          ports:
+            - containerPort: 5678
+          resources:
+            requests: { cpu: "10m", memory: "32Mi" }
+            limits: { memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-err
+  namespace: apps
+spec:
+  selector: { app: app-err }
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: traffic-gen
+  namespace: apps
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: gen
+              image: curlimages/curl:8.6.0
+              command: ["/bin/sh","-lc"]
+              args:
+                - |
+                  i=0
+                  while [ $i -lt 120 ]; do
+                    # 200 OK
+                    curl -s -o /dev/null -w "OK status=%{http_code}\n" http://app-ok.apps.svc.cluster.local/ || true
+
+                    # "erro" simulado: chama um path inexistente do nginx pra gerar 404
+                    curl -s -o /dev/null -w "ERR status=%{http_code}\n" http://app-ok.apps.svc.cluster.local/does-not-exist || true
+
+                    # app-err (sempre 200, mas você vê logs diferentes)
+                    curl -s -o /dev/null -w "ECHO status=%{http_code}\n" http://app-err.apps.svc.cluster.local/ || true
+
+                    i=$((i+1))
+                    sleep 1
+                  done
+              resources:
+                requests: { cpu: "10m", memory: "32Mi" }
+                limits: { memory: "64Mi" }
