@@ -1,127 +1,286 @@
-# Laboratório Local de Observabilidade Multi-Cluster (KIND)
+# Multi-Cluster Observability Lab (KIND)
 
-> Este repositório contém o material completo para subir um laboratório local com **dois clusters Kubernetes separados**, focado em **observabilidade e logs**, pronto para estudo, testes e comparação entre **Loki** e **ELK**.
+## 📌 Objetivo
 
-## 🎯 Objetivo
+Este repositório demonstra como montar **localmente** um laboratório de **observabilidade multi-cluster** usando **KIND**, com **clusters isolados em redes Docker separadas**.
 
-* Subir **2 clusters KIND** em **redes Docker separadas**
-* Centralizar observabilidade em um cluster dedicado
-* Coletar:
+A ideia é comparar **logs no Loki vs Elasticsearch (ELK)** e centralizar **métricas no Prometheus + Grafana**, tudo com consumo reduzido de recursos.
 
-  * Logs via **Loki** e **Elasticsearch**
-  * Métricas via **Prometheus**
-* Ter **2 aplicações simples** gerando logs frequentes (200 / 404 / erro simulado)
-* Comparar a experiência de uso entre **Loki (Grafana)** e **ELK (Kibana)**
+---
 
 ## 🧱 Arquitetura
 
+### Clusters
+
+| Cluster         | Rede Docker | Função                               |
+| --------------- | ----------- | ------------------------------------ |
+| `observability` | `net-obs`   | Grafana, Loki, Elasticsearch, Kibana |
+| `apps`          | `net-app`   | Aplicações, Prometheus, Fluent Bit   |
+
+### Fluxo de dados
+
 ```
-+----------------------+          +-----------------------------+
-| Cluster apps        |          | Cluster observability       |
-| (rede net-app)      |          | (rede net-obs)              |
-|                      |          |                             |
-|  Apps (nginx/echo)  |  logs →  |  Loki                        |
-|  Traffic Generator  |--------> |  Elasticsearch + Kibana     |
-|  Prometheus         | metrics→ |  Grafana                    |
-|  Fluent Bit         |          |                             |
-+----------------------+          +-----------------------------+
+Apps Cluster
+  ├─ Logs ──► Fluent Bit ──► Loki (Obs Cluster)
+  │                         └─► Elasticsearch (Obs Cluster)
+  └─ Metrics ──► Prometheus (Apps Cluster)
+                    └─► Grafana (Obs Cluster)
 ```
 
-## 🧰 Tecnologias Utilizadas
-
-* Kubernetes local: **KIND**
-* Observabilidade: Grafana, Prometheus, Loki
-* Logs: Fluent Bit, Elasticsearch + Kibana
-* Apps de teste: nginx e http-echo
+---
 
 ## ⚙️ Pré-requisitos
 
-* Docker
-* kind
+* Docker Desktop
+* KIND
 * kubectl
-* helm
+* Helm
+* Máquina recomendada: **4 vCPU / 8GB RAM**
 
-Recomendado: **4 vCPU / 8GB RAM**
+---
 
-## 1️⃣ Criar Redes Docker Separadas
+## 📝 Passo a Passo Cronológico com Arquivos YAML
 
-```bash
-docker network create net-obs
-docker network create net-app
-```
+### 1️⃣ Criar redes Docker isoladas
 
-## 2️⃣ Criar Clusters KIND
-
-### Cluster Observability
+Arquivo: `networks/docker-networks.sh`
 
 ```bash
-kind create cluster --config kind-observability.yaml
-docker network connect net-obs observability-control-plane
+docker network create net-obs || true
+docker network create net-app || true
 ```
 
-### Cluster Apps
+Executar:
 
 ```bash
-kind create cluster --config kind-apps.yaml
-docker network connect net-app apps-control-plane
+bash networks/docker-networks.sh
 ```
 
-## 3️⃣ Namespaces
+---
+
+### 2️⃣ Criar clusters KIND
+
+Arquivo: `kind/kind-observability.yaml`
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: observability
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30000
+        hostPort: 30000
+        protocol: TCP
+      - containerPort: 30001
+        hostPort: 30001
+        protocol: TCP
+      - containerPort: 30002
+        hostPort: 30002
+        protocol: TCP
+      - containerPort: 30003
+        hostPort: 30003
+        protocol: TCP
+```
+
+Arquivo: `kind/kind-apps.yaml`
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: apps
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 31000
+        hostPort: 31000
+        protocol: TCP
+```
+
+Criar os clusters:
+
+```bash
+kind create cluster --config kind/kind-observability.yaml
+kind create cluster --config kind/kind-apps.yaml
+```
+
+Conectar clusters às redes Docker:
+
+```bash
+docker network connect net-obs observability-control-plane || true
+docker network connect net-app apps-control-plane || true
+```
+
+---
+
+### 3️⃣ Criar namespaces base
 
 ```bash
 kubectl --context kind-observability create ns observability
 kubectl --context kind-observability create ns logging
-
 kubectl --context kind-apps create ns apps
 kubectl --context kind-apps create ns monitoring
 ```
 
-## 4️⃣ Stack de Observabilidade (Cluster observability)
+---
 
-* **Loki**: logs estruturados, baixo consumo de recursos (NodePort 30001)
-* **Elasticsearch + Kibana**: single-node, JVM limitada (ES: 30002 / Kibana: 30003)
-* **Grafana**: centraliza métricas e logs (NodePort 30000)
+### 4️⃣ Deploy Observability Cluster
 
-## 5️⃣ Cluster Apps
+#### Loki
 
-* **Aplicações**: app-ok (nginx), app-err (http-echo)
-* **Traffic Generator**: CronJob gera tráfego a cada minuto
+Arquivo: `observability/loki-values.yaml`
 
-## 6️⃣ Prometheus (Cluster apps)
+```yaml
+deploymentMode: SingleBinary
+auth_enabled: false
+singleBinary:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+```
 
-* Scrape das aplicações
-* Retenção curta (6h)
-* Exposto via NodePort 31000
+Instalar:
 
-## 7️⃣ Fluent Bit (Logs → Loki + Elasticsearch)
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm upgrade --install loki grafana/loki -n logging --kube-context kind-observability -f observability/loki-values.yaml
+```
 
-* Lê logs do namespace `apps`
-* Envia logs simultaneamente para Loki e Elasticsearch
-* Comunicação via `host.docker.internal`
+#### Elasticsearch + Kibana
 
-## 8️⃣ Grafana – Configuração de Datasources
+Arquivo: `observability/elastic-values.yaml`
 
-* **Loki**: `http://loki.logging.svc.cluster.local:3100`
-* **Prometheus (apps)**: `http://host.docker.internal:31000`
-* **Elasticsearch (opcional)**: `http://host.docker.internal:30002`, index `logstash-*`, time field `@timestamp`
+```yaml
+replicas: 1
+minimumMasterNodes: 1
+resources:
+  requests:
+    cpu: 200m
+    memory: 1Gi
+  limits:
+    memory: 2Gi
+esJavaOpts: "-Xms512m -Xmx512m"
+volumeClaimTemplate:
+  resources:
+    requests:
+      storage: 5Gi
+```
 
-## 9️⃣ Validação
+Instalar:
 
-* **Loki**: Grafana → Explore → `{namespace="apps"}`
-* **Kibana**: Discover → filtro `kubernetes.namespace_name: "apps"`
-* **Métricas**: Grafana → Prometheus datasource
+```bash
+helm repo add elastic https://helm.elastic.co
+helm upgrade --install elasticsearch elastic/elasticsearch -n logging --kube-context kind-observability -f observability/elastic-values.yaml
+helm upgrade --install kibana elastic/kibana -n logging --kube-context kind-observability
+```
 
-## 🔥 Comparações Esperadas
+#### Grafana
 
-| Aspecto      | Loki    | ELK           |
-| ------------ | ------- | ------------- |
-| Setup        | Simples | Mais complexo |
-| Consumo      | Baixo   | Alto          |
-| Query        | LogQL   | Lucene        |
-| UX           | Grafana | Kibana        |
-| Ideal p/ K8s | ⭐⭐⭐⭐    | ⭐⭐⭐           |
+Arquivo: `observability/grafana-values.yaml`
 
-## 🧹 Limpeza do Ambiente
+```yaml
+adminUser: admin
+adminPassword: admin
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+```
+
+Instalar:
+
+```bash
+helm upgrade --install grafana grafana/grafana -n observability --kube-context kind-observability -f observability/grafana-values.yaml
+```
+
+---
+
+### 5️⃣ Deploy Apps Cluster
+
+Arquivo: `apps/apps.yaml` (aplicações + cronjob de tráfego)
+
+```yaml
+# app-ok, app-err, serviços e CronJob de tráfego
+# (conteúdo conforme exemplos anteriores)
+```
+
+Aplicar:
+
+```bash
+kubectl --context kind-apps apply -f apps/apps.yaml
+```
+
+#### Prometheus
+
+Arquivo: `apps/prometheus-values.yaml`
+
+```yaml
+grafana:
+  enabled: false
+alertmanager:
+  enabled: false
+prometheus:
+  prometheusSpec:
+    retention: 6h
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+```
+
+Instalar:
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade --install kps prometheus-community/kube-prometheus-stack -n monitoring --kube-context kind-apps -f apps/prometheus-values.yaml
+```
+
+#### Fluent Bit (envio de logs para Loki + Elasticsearch)
+
+Arquivo: `apps/fluent-bit-values.yaml`
+
+```yaml
+# Configuração conforme exemplos anteriores
+```
+
+Instalar:
+
+```bash
+helm repo add fluent https://fluent.github.io/helm-charts
+helm upgrade --install fluent-bit fluent/fluent-bit -n monitoring --kube-context kind-apps -f apps/fluent-bit-values.yaml
+```
+
+---
+
+### 6️⃣ Configurar datasources no Grafana (Obs Cluster)
+
+* Prometheus (Apps Cluster): `http://host.docker.internal:31000`
+* Loki: `http://loki.logging.svc.cluster.local:3100`
+* Elasticsearch: `http://host.docker.internal:30002`
+
+---
+
+### 7️⃣ Validações
+
+```bash
+kubectl --context kind-apps -n apps get pods
+kubectl --context kind-apps -n monitoring logs ds/fluent-bit
+```
+
+* Logs no Grafana (Loki) e Kibana (ELK)
+* Métricas das apps no Grafana (Prometheus)
+
+---
+
+### 8️⃣ Cleanup
 
 ```bash
 kind delete cluster --name observability
@@ -130,13 +289,3 @@ kind delete cluster --name apps
 docker network rm net-obs
 docker network rm net-app
 ```
-
-## 📌 Próximos Passos (Opcional)
-
-* Criar app em Go/Node com erro 500 real
-* Adicionar OpenTelemetry
-* Dashboards customizados
-* Exportar métricas via OTLP
-* Testar Promtail vs Fluent Bit
-
-> ✅ Laboratório ideal para estudos de SRE, Observabilidade e entrevistas técnicas.
