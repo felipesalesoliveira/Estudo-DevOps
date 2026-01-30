@@ -6,4 +6,4 @@ nodes:
     extraPortMappings:
       - containerPort: 31000
         hostPort: 31000
-        protocol: TCP
+        protocol: TCP  # Prometheus Exporter

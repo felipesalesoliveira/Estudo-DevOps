@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: traffic-generator
+  namespace: apps
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: generator
+              image: curlimages/curl:8.6.0
+              command: ["/bin/sh","-c"]
+              args:
+                - |
+                  for i in $(seq 1 120); do
+                    curl -s -o /dev/null -w "OK %{http_code}\n" http://app-ok.apps.svc.cluster.local || true
+                    curl -s -o /dev/null -w "ERR %{http_code}\n" http://app-ok.apps.svc.cluster.local/does-not-exist || true
+                    curl -s -o /dev/null -w "ECHO %{http_code}\n" http://app-error.apps.svc.cluster.local || true
+                    sleep 1
+                  done
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 64Mi
