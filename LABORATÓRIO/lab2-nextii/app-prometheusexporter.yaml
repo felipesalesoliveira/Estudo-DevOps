@@ -32,7 +32,7 @@ metadata:
   namespace: monitoring
 spec:
   selector:
-    app: exporter
+    app: node-exporter
   type: NodePort             # NodePort para acesso externo
   ports:
     - port: 9100
