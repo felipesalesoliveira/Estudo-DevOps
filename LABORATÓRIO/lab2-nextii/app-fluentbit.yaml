@@ -1,32 +1,4 @@
 apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: fluentbit
-  namespace: monitoring
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: fluentbit
-rules:
-  - apiGroups: [""]
-    resources: [pods, namespaces]
-    verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: fluentbit
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: fluentbit
-subjects:
-  - kind: ServiceAccount
-    name: fluentbit
-    namespace: monitoring
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluentbit-config
@@ -58,15 +30,15 @@ data:
     [OUTPUT]
         Name  loki
         Match *
-        Host  loki.logging.svc.cluster.local
-        Port  3100
+        Host  host.docker.internal
+        Port  30001
         URI   /loki/api/v1/push
 
     [OUTPUT]
         Name  es
         Match *
-        Host  elasticsearch.logging.svc.cluster.local
-        Port  9200
+        Host  host.docker.internal
+        Port  30002
         Index apps-logs
 ---
 apiVersion: apps/v1
@@ -83,7 +55,6 @@ spec:
       labels:
         app: fluentbit
     spec:
-      serviceAccountName: fluentbit
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists

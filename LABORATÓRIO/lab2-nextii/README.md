@@ -43,23 +43,24 @@ Apps Cluster
 
 ### 1️⃣ Criar redes Docker isoladas
 
-Arquivo: `docker-networks.sh`
+Arquivo: `networks/docker-networks.sh`
 
 ```bash
-docker network create net-obs net-app net-shared || true
+docker network create net-obs || true
+docker network create net-app || true
 ```
 
-Executar (após criar os clusters):
+Executar:
 
 ```bash
-bash docker-networks.sh
+bash networks/docker-networks.sh
 ```
 
 ---
 
 ### 2️⃣ Criar clusters KIND
 
-Arquivo: `kind-observability.yaml`
+Arquivo: `kind/kind-observability.yaml`
 
 ```yaml
 kind: Cluster
@@ -82,7 +83,7 @@ nodes:
         protocol: TCP
 ```
 
-Arquivo: `kind-apps.yaml`
+Arquivo: `kind/kind-apps.yaml`
 
 ```yaml
 kind: Cluster
@@ -99,27 +100,16 @@ nodes:
 Criar os clusters:
 
 ```bash
-kind create cluster --config kind-observability.yaml
-kind create cluster --config kind-apps.yaml
+kind create cluster --config kind/kind-observability.yaml
+kind create cluster --config kind/kind-apps.yaml
 ```
 
-Conectar clusters às redes Docker (execute após criar os clusters):
+Conectar clusters às redes Docker:
 
 ```bash
-bash docker-networks.sh
-```
-
-Ou manualmente:
-
-```bash
-docker network create net-obs net-app net-shared || true
 docker network connect net-obs observability-control-plane || true
 docker network connect net-app apps-control-plane || true
-docker network connect net-shared observability-control-plane || true
-docker network connect net-shared apps-control-plane || true
 ```
-
-> **Comunicação entre clusters**: O Fluent Bit (apps) e Prometheus (observability) usam `host.docker.internal` para alcançar Loki/Elasticsearch e o Prometheus Exporter via NodePorts expostos no host. Funciona no Mac/Windows. No Linux, use Docker 20.10+.
 
 ---
 
